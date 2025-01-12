@@ -4,13 +4,16 @@ import { clientPromise } from "../../../lib/mongodb";
 export async function GET() {
     try {
         const client = await clientPromise; // Attente de la promesse de connexion
-        const db = client.db("sample_mflix"); // Utilisez la base de données que vous souhaitez
-        await db.command({ ping: 1 }); // Envoi d'un ping pour vérifier la connexion
+        const db = client.db("alabmodeling"); // Utilisez la base de données que vous souhaitez
+        const formationsCollections = db.collection("formations");
+
+        const formations = await formationsCollections.find({}).toArray();
 
         console.log("Ping réussi, la connexion à MongoDB a fonctionné !");
 
         return NextResponse.json({
             message: "Ping réussi, la connexion à MongoDB a fonctionné !",
+            data: formations
         });
     } catch (error) {
         console.error("Erreur de connexion à MongoDB:", error);
