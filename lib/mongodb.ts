@@ -1,9 +1,14 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
+
+if (!uri) {
+    throw new Error("La variable d'environnement MONGODB_URI n'est pas définie");
+}
+
 const client = new MongoClient(uri);
 
-let clientPromise;
+let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === "development") {
     // Si on est en développement, éviter la reconnexion à chaque modification du code
@@ -18,4 +23,4 @@ if (process.env.NODE_ENV === "development") {
     clientPromise = client.connect();
 }
 
-export default clientPromise;
+export {clientPromise};
